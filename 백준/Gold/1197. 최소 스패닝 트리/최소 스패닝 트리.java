@@ -25,7 +25,7 @@ class Main{
             int s = Integer.parseInt(st.nextToken()), e = Integer.parseInt(st.nextToken()), v = Integer.parseInt(st.nextToken());
             graph.offer(new Edge(s, e, v));
         }
-        while(!graph.isEmpty() && cnt != n-1){    // 유니온한 에지 수가 e-1개 일 때까지
+        while(!graph.isEmpty() && cnt != n-1){    // 유니온한 에지 수가 n-1개 일 때까지
             Edge edge = graph.poll();
             if(union(edge)){
                 cnt++;
