@@ -7,7 +7,6 @@ class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken()), s = Integer.parseInt(st.nextToken()), m = Integer.parseInt(st.nextToken());
         int[][] volume = new int[n][m+1];
-        Arrays.stream(volume).flatMapToInt(Arrays::stream).forEach(v -> v=-1);
         int[] v = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         if(s + v[0] <= m) volume[0][s+v[0]] = 1;
         if(s - v[0] >= 0) volume[0][s-v[0]] = 1;
