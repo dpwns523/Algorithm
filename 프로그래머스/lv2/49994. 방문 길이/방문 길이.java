@@ -1,38 +1,42 @@
 import java.util.*;
 class Solution {
     public static final int row = 11, col = 11;
-    public static int[] command = {1,-1};
+    public static int[][] direction = {{1,0},{-1,0},{0,1},{0,-1}};
     public int solution(String dirs) {
-        int answer = 0;
         int[][] map = new int[row][col];
-        int r = 5, c = 5;
-        // 도착점이 아닌 이동한 길에 대해서 체크하는 것 현재 위치 -> 다음 위치가 기록되어야 함
+        char[] commands = dirs.toCharArray();
         Set<String> set = new HashSet<>();
-        for(String dir : dirs.split("")) {
-            int nextR = r, nextC = c;
-            if(dir.equals("U")){
-                nextR += command[0];
+        int r=5, c=5;
+        for(char command : commands) {
+            int nextR, nextC;
+            if(command == 'U') {
+                nextR = r + direction[0][0];
+                nextC = c + direction[0][1];
             }
-            else if(dir.equals("D")) {
-                nextR += command[1];
+            else if(command == 'D') {
+                nextR = r + direction[1][0];
+                nextC = c + direction[1][1];
             }
-            else if(dir.equals("R")) {
-                nextC += command[0];
+            else if(command == 'R') {
+                nextR = r + direction[2][0];
+                nextC = c + direction[2][1];
             }
             else {
-                nextC += command[1];
+                nextR = r + direction[3][0];
+                nextC = c + direction[3][1];
             }
-            if(nextR >= 0 && nextR < row && nextC >= 0 && nextC < col) {
+            if(checkPos(nextR, nextC)) {
                 String d1 = ""+r+c+nextR+nextC;
                 String d2 = ""+nextR+nextC+r+c;
-                if(!set.contains(d1)) answer++;
                 set.add(d1);
                 set.add(d2);
                 r = nextR;
                 c = nextC;
             }
         }
-        
-        return answer;
+        return set.size()/2;
+    }
+    public boolean checkPos(int r, int c) {
+        return (r<0 || r>=row || c<0 || c>=col) ? false : true;
     }
 }
