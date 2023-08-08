@@ -9,6 +9,10 @@
 | ----- | ----- |
 |1208. ［S／W 문제해결 기본］ 1일차 － Flatten|[링크](./SWEA/D3/1208.%E2%80%85%EF%BC%BBS%EF%BC%8FW%E2%80%85%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%E2%80%85%EA%B8%B0%EB%B3%B8%EF%BC%BD%E2%80%851%EC%9D%BC%EC%B0%A8%E2%80%85%EF%BC%8D%E2%80%85Flatten/%EF%BC%BBS%EF%BC%8FW%E2%80%85%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%E2%80%85%EA%B8%B0%EB%B3%B8%EF%BC%BD%E2%80%851%EC%9D%BC%EC%B0%A8%E2%80%85%EF%BC%8D%E2%80%85Flatten.java)|
 ## 📚 백준
+### 🚀 Bronze
+| 문제번호 | 링크 |
+| ----- | ----- |
+|3040. 백설 공주와 일곱 난쟁이|[링크](./%EB%B0%B1%EC%A4%80/Bronze/3040.%E2%80%85%EB%B0%B1%EC%84%A4%E2%80%85%EA%B3%B5%EC%A3%BC%EC%99%80%E2%80%85%EC%9D%BC%EA%B3%B1%E2%80%85%EB%82%9C%EC%9F%81%EC%9D%B4/README.md)|
 ### 🚀 Gold
 | 문제번호 | 링크 |
 | ----- | ----- |
