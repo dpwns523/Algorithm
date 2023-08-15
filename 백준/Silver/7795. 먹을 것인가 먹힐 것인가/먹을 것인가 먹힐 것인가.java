@@ -9,9 +9,17 @@ public class Main {
         for (int t = 0; t < T; t++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken()), m = Integer.parseInt(st.nextToken());
+            a = new int[n];
+            b = new int[m];
 
-            a = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            b = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+            st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < n; i++) {
+                a[i] = Integer.parseInt(st.nextToken());
+            }
+            st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < m; i++) {
+                b[i] = Integer.parseInt(st.nextToken());
+            }
 
             Arrays.sort(b);
             Arrays.sort(a);
