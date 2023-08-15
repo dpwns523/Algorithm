@@ -9,22 +9,23 @@ public class Main {
         int m = Integer.parseInt(st.nextToken()), n = Integer.parseInt(st.nextToken());
         snacks = new int[n];
         st = new StringTokenizer(br.readLine());
+        int max = 0;
         for (int i = 0; i < n; i++) {
             snacks[i] = Integer.parseInt(st.nextToken());
+            max = Math.max(max, snacks[i]);
         }
-        Arrays.sort(snacks);
-        System.out.println(findSnackLen(m));
+        System.out.println(findSnackLen(m, max));
         br.close();
     }
 
-    public static int findSnackLen(int m) {
+    public static int findSnackLen(int m, int ed) {
         int res = 0;
-        int st = 1, ed = snacks[snacks.length-1];
+        int st = 1;
         while(st <= ed) {
             int mid = (st + ed) / 2;
-            int cnt = 0, idx = binarySearch(mid);
+            int cnt = 0;
 
-            for (int i = idx; i < snacks.length; i++) {
+            for (int i = 0; i < snacks.length; i++) {
                 cnt += snacks[i] / mid;
             }
 
@@ -36,18 +37,4 @@ public class Main {
         }
         return res;
     }
-
-    public static int binarySearch(int key) {
-        int st = 0, ed = snacks.length, res = 0;
-        while (st <= ed) {
-            int mid = (st + ed) / 2;
-            if(key <= snacks[mid]) {
-                res = mid;
-                ed = mid - 1;
-            }
-            else st = mid + 1;
-        }
-        return res;
-    }
-
 }
