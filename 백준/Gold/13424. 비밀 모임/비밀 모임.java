@@ -9,7 +9,7 @@ public class Main {
         int T = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
         for (int test_case = 0; test_case < T; test_case++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             int n = Integer.parseInt(st.nextToken()), m = Integer.parseInt(st.nextToken());
 
             for (int i = 1; i <= n; i++) {  // 초기화
@@ -19,7 +19,7 @@ public class Main {
             }
 
             for (int i = 0; i < m; i++) {   // 간선 입력
-                st = new StringTokenizer(br.readLine());
+                st = new StringTokenizer(br.readLine(), " ");
                 int a = Integer.parseInt(st.nextToken()), b = Integer.parseInt(st.nextToken()), c = Integer.parseInt(st.nextToken());
                 map[a][b] = c;
                 map[b][a] = c;
@@ -28,7 +28,7 @@ public class Main {
             floydWarshall(n);   // 최단 경로 업데이트
 
             int k = Integer.parseInt(br.readLine());
-            st = new StringTokenizer(br.readLine());
+            st = new StringTokenizer(br.readLine(), " ");
             int[] friends = new int[k];
             for (int i = 0; i < k; i++) {   // 모임에 오는 친구
                 friends[i] = Integer.parseInt(st.nextToken());
