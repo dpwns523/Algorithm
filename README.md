@@ -133,6 +133,7 @@
 |5014. 스타트링크|[링크](./%EB%B0%B1%EC%A4%80/Silver/5014.%E2%80%85%EC%8A%A4%ED%83%80%ED%8A%B8%EB%A7%81%ED%81%AC/%EC%8A%A4%ED%83%80%ED%8A%B8%EB%A7%81%ED%81%AC.java)|
 |5567. 결혼식|[링크](./%EB%B0%B1%EC%A4%80/Silver/5567.%E2%80%85%EA%B2%B0%ED%98%BC%EC%8B%9D/README.md)|
 |7795. 먹을 것인가 먹힐 것인가|[링크](./%EB%B0%B1%EC%A4%80/Silver/7795.%E2%80%85%EB%A8%B9%EC%9D%84%E2%80%85%EA%B2%83%EC%9D%B8%EA%B0%80%E2%80%85%EB%A8%B9%ED%9E%90%E2%80%85%EA%B2%83%EC%9D%B8%EA%B0%80/README.md)|
+|8394. 악수|[링크](./%EB%B0%B1%EC%A4%80/Silver/8394.%E2%80%85%EC%95%85%EC%88%98/README.md)|
 ### 🚀 Unrated
 | 문제번호 | 링크 |
 | ----- | ----- |
