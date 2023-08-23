@@ -52,12 +52,17 @@ public class Main {
 		
 	}//end of main
 	private static void dfs(int start,int[] dist,int cur,boolean[] flag) {
+		if(cur>7) {
+			return;
+		}
+		
 		if(dist[start]>cur) {
 			dist[start]=cur;
 		}
 		flag[start]=true;
-
+		
 		for(Node next=nodes[start].next;next!=null;next=next.next) {
+			
 			if(!flag[next.nodeNum]||dist[next.nodeNum]>cur+1) {
 				dfs(next.nodeNum,dist,cur+1,flag);
 			}
