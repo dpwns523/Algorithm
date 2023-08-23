@@ -8,6 +8,10 @@
 | 문제번호 | 링크 |
 | ----- | ----- |
 |1208. ［S／W 문제해결 기본］ 1일차 － Flatten|[링크](./SWEA/D3/1208.%E2%80%85%EF%BC%BBS%EF%BC%8FW%E2%80%85%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%E2%80%85%EA%B8%B0%EB%B3%B8%EF%BC%BD%E2%80%851%EC%9D%BC%EC%B0%A8%E2%80%85%EF%BC%8D%E2%80%85Flatten/%EF%BC%BBS%EF%BC%8FW%E2%80%85%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%E2%80%85%EA%B8%B0%EB%B3%B8%EF%BC%BD%E2%80%851%EC%9D%BC%EC%B0%A8%E2%80%85%EF%BC%8D%E2%80%85Flatten.java)|
+### 🚀 D4
+| 문제번호 | 링크 |
+| ----- | ----- |
+|1238. ［S／W 문제해결 기본］ 10일차 － Contact|[링크](./SWEA/D4/1238.%E2%80%85%EF%BC%BBS%EF%BC%8FW%E2%80%85%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%E2%80%85%EA%B8%B0%EB%B3%B8%EF%BC%BD%E2%80%8510%EC%9D%BC%EC%B0%A8%E2%80%85%EF%BC%8D%E2%80%85Contact/README.md)|
 ## 📚 백준
 ### 🚀 Bronze
 | 문제번호 | 링크 |
