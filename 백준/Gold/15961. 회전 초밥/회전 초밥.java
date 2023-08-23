@@ -16,7 +16,7 @@ public class Main {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(c, 1);
         int s = 0, ed = 0, max = 0;
-        while(s < n ) {
+        while(s < n && max != k+1) {
             if(ed >= n) map.put(sushis[ed - n], map.getOrDefault(sushis[ed++ - n], 0)+1);
             else map.put(sushis[ed], map.getOrDefault(sushis[ed++], 0)+1);
             if(ed >= k) {   // k개
