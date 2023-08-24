@@ -1,77 +1,108 @@
-import java.io.*;
-import java.util.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static final int fixNum = 4;
-    public static int[] seq = {0,1,2,3,4,5,6,7,8,9}, visited = new int[10];
-    public static int[][] game;
-    public static int max;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        game = new int[n][10];
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 1; j < 10; j++) {
-                game[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-        seq[fixNum] = 1;
-        visited[1] = 1;
-        dfs(1);
-        System.out.println(max);
-        br.close();
-    }
-    public static void dfs(int cnt) {
-        if(cnt == 10) {
-            max = Math.max(max, playGame());
-            return;
-        }
-        if(cnt == 4) {
-            dfs(cnt+1);    // 4번타자 고정
-            return;
-        }
-        for (int i = 2; i < 10; i++) {
-            if(visited[i] == 1) continue;
-            visited[i] = 1;
-            seq[cnt] = i;
-            dfs(cnt+1);
-            visited[i] = 0;
-        }
-    }
+	static int needOutCount;
+	private static int n;
+	private static int[][] arr;
+	private static int maxScore = 0;
 
-    public static int playGame() {
-        // 타석 seq로 게임 시작
-        int score = 0, idx = 1;
-        int[] runner = new int[3];
-        for (int i = 0; i < game.length; i++) {
-            Arrays.fill(runner, 0);
-            int out = 0;
-            while (out < 3) {
-                int batter = game[i][seq[idx]];
-                if (batter == 0) out++;
-                else if(batter > 0) {
-                    if (batter == 4) {
-                        score++;
-                        for (int j = 0; j < 3; j++) {
-                            score += runner[j];
-                            runner[j] = 0;
-                        }
-                    } else {
-                        for (int k = 2; k >= 0; k--) {  // 주자 제크
-                            if (runner[k] != 0) {
-                                if (k + batter >= 3) score++;
-                                else runner[k + batter] = 1;
-                            }
-                            runner[k] = 0;
-                        }
-                        runner[batter - 1] = 1;
-                    }
-                }
-                idx = idx == 9 ? 1 : idx + 1;
-            }
-        }
-        return score;
-    }
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
 
+		arr = new int[n + 1][10];
+		for (int i = 1; i <= n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+			for (int j = 1; j <= 9; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		} // 입력 완료
+
+		// arr[i][j]는 j번 타자가 i회에 칠 수 있는 타구
+
+		needOutCount = n * 3;
+
+		int[] seq = new int[10];
+		boolean[] visited = new boolean[10];
+		seq[4] = 1;
+		visited[1] = true;
+
+		makeSequence(1, seq, visited);
+		System.out.println(maxScore);
+
+	}
+
+	private static void makeSequence(int cur, int[] seq, boolean[] visited) {
+		if (cur == 4) {
+			makeSequence(cur + 1, seq, visited);
+			return;
+		}
+		if (cur == 10) {
+			maxScore = Math.max(maxScore, gameStart(seq));
+			return;
+		}
+
+		for (int i = 1; i < 10; i++) {
+			if (!visited[i]) {
+				seq[cur] = i;
+				visited[i] = true;
+				makeSequence(cur + 1, seq, visited);
+				visited[i] = false;
+				seq[cur] = -1;
+			}
+		}
+
+	}
+
+	private static int gameStart(int[] seq) {
+
+		int curBetting = 1;
+		int curInning = 1;
+		int score = 0;
+//		if (seq[2] == 5 && seq[3] == 6 && seq[5] == 7) {
+//			System.out.println("d");
+//		}
+		int size = n;
+		while (size-- > 0) {
+			int flag = 0;
+			int outCount = 0;
+
+			while (outCount != 3) {
+				int cur = arr[curInning][seq[curBetting]];
+				curBetting++;
+				if (curBetting == 10) {
+					curBetting = 1;
+				}
+
+				if (cur == 0) {// 현재타자 아웃당햇을때
+					outCount++;
+					continue;
+				} else {
+					flag = flag << 1;
+					flag++;
+					if (flag >= 8) {
+						score++;
+						flag -= 8;
+					}
+
+					for (int i = 1; i < cur; i++) {
+						flag = flag << 1;
+						if (flag >= 8) {
+							score++;
+							flag -= 8;
+						}
+					}
+				}
+
+			}
+			curInning++;
+		}
+		return score;
+	}
 }
