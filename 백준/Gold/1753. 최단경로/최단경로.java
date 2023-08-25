@@ -1,56 +1,87 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static class Node {
-        int num, weight;
-        public Node(int num, int weight) {
-            this.num=num;
-            this.weight=weight;
-        }
-    }
-    public static int[] distance;
-    public static List<ArrayList<Node>> graph = new ArrayList<>();
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int V = Integer.parseInt(st.nextToken()), E = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(br.readLine());
-        for (int i = 0; i <= V; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for (int i = 0; i < E; i++) {
-            st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken()), v = Integer.parseInt(st.nextToken()), w = Integer.parseInt(st.nextToken());
-            graph.get(u).add(new Node(v,w));
-        }
-        distance = new int[V+1];
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        distance[start] = 0;
-        dijkstra(start);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= V; i++) {
-            sb.append(distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]).append("\n");
-        }
-        System.out.print(sb);
-        br.close();
-    }
-    public static void dijkstra(int start) {
-        Queue<Node> queue = new PriorityQueue<>((Node n1, Node n2) -> n1.weight - n2.weight);
-        int[] visited = new int[distance.length];
-        queue.offer(new Node(start, 0));
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
-            if(visited[node.num] == 1) continue;
-            visited[node.num] = 1;
-            for (Node next : graph.get(node.num)) {
-                if(distance[next.num] > distance[node.num] + next.weight) {
-                    distance[next.num] = distance[node.num] + next.weight;
-                    queue.offer(new Node(next.num, distance[next.num]));
-                }
-            }
-        }
-    }
+	static ArrayList<Node>[] arr;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st=new StringTokenizer(br.readLine());
+		
+		int V=Integer.parseInt(st.nextToken());
+		int E=Integer.parseInt(st.nextToken());
+		
+		int K=Integer.parseInt(br.readLine());//시작점
+		
+		int[] dist=new int[V+1];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		
+		arr=new ArrayList[V+1];
+		for(int i=1;i<=V;i++) {
+			arr[i]=new ArrayList<>();
+		}
+		
+		for(int i=0;i<E;i++) {
+			st=new StringTokenizer(br.readLine());
+			int u=Integer.parseInt(st.nextToken());
+			int v=Integer.parseInt(st.nextToken());
+			int w=Integer.parseInt(st.nextToken());
+		
+			arr[u].add(new Node(v,w));
+		}
+		dijk(K,dist);
+		StringBuilder sb=new StringBuilder();
+		for(int i=1;i<=V;i++) {
+			if(dist[i]==Integer.MAX_VALUE) {
+				sb.append("INF").append('\n');
+			}else {
+				sb.append(dist[i]).append('\n');
+			}
+		}
+		System.out.println(sb.toString());
+		
+		
+		
+	}//end of main
+	private static void dijk(int k,int[] dist) {
+		PriorityQueue<Node> pq=new PriorityQueue<>();
+		dist[k]=0;
+		pq.add(new Node(k,0));
+		
+		while(!pq.isEmpty()) {
+			Node cur=pq.poll();
+			int sz=arr[cur.nodeNum].size();
+			
+			for(int i=0;i<sz;i++) {
+				Node cmp=arr[cur.nodeNum].get(i);
+				
+				if(dist[cmp.nodeNum]>dist[cur.nodeNum]+cmp.cost) {
+					dist[cmp.nodeNum]=dist[cur.nodeNum]+cmp.cost;
+					pq.add(new Node(cmp.nodeNum,dist[cmp.nodeNum]));
+				}
+			}
+		}
+		
+	}
+	static class Node implements Comparable<Node>{
+		int nodeNum;
+		int cost;
+		
+		public Node(int nodeNum, int cost) {
+			this.nodeNum = nodeNum;
+			this.cost=cost;
+		}
+
+		@Override
+		public int compareTo(Node o) {
+			
+			return this.cost-o.cost;
+		}
+		
+	}
 }
