@@ -1,52 +1,55 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
 
-class Main{
-    static class Node{
-        int num, w;
-        public Node(int num, int w){
-            this.num=num; this.w=w;
+public class Main {
+    static class Node {
+        int num, weight;
+        public Node(int num, int weight) {
+            this.num=num;
+            this.weight=weight;
         }
     }
+    public static int[] distance;
     public static List<ArrayList<Node>> graph = new ArrayList<>();
-    public static int[] d, visited;
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int v = Integer.parseInt(st.nextToken()), e = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(br.readLine());
-        for(int i=0; i<=v; i++){
+        int V = Integer.parseInt(st.nextToken()), E = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(br.readLine());
+        for (int i = 0; i <= V; i++) {
             graph.add(new ArrayList<>());
         }
-        for(int i=0; i<e; i++){
+        for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
-            int n1 = Integer.parseInt(st.nextToken()), n2 = Integer.parseInt(st.nextToken()), w = Integer.parseInt(st.nextToken());
-            graph.get(n1).add(new Node(n2, w));
+            int u = Integer.parseInt(st.nextToken()), v = Integer.parseInt(st.nextToken()), w = Integer.parseInt(st.nextToken());
+            graph.get(u).add(new Node(v,w));
         }
-        d = new int[v+1];
-        visited = new int[v+1];
-        Arrays.fill(d, Integer.MAX_VALUE);
-        d[k] = 0;    // 시작 노드
-        dijkstra(k);
+        distance = new int[V+1];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[start] = 0;
+        dijkstra(start);
         StringBuilder sb = new StringBuilder();
-        for(int i=1; i<=v; i++){
-            if(d[i] == Integer.MAX_VALUE) sb.append("INF\n");
-            else sb.append(d[i]+"\n");
+        for (int i = 1; i <= V; i++) {
+            sb.append(distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]).append("\n");
         }
         System.out.print(sb);
         br.close();
     }
-    public static void dijkstra(int start){
-        Queue<Node> queue = new PriorityQueue<>((n1, n2) -> n1.w - n2.w);
+    public static void dijkstra(int start) {
+        Queue<Node> queue = new PriorityQueue<>((Node n1, Node n2) -> n1.weight - n2.weight);
+        int[] visited = new int[distance.length];
         queue.offer(new Node(start, 0));
-        while(!queue.isEmpty()){
-            Node n = queue.poll();
-            if(visited[n.num] == 1) continue;
-            visited[n.num] = 1;
-            for(Node node : graph.get(n.num)){
-                if(d[node.num] > d[n.num] + node.w) d[node.num] = d[n.num] + node.w;
-                // 업데이트 된 최소 비용으로 다음 노드로 간다
-                queue.offer(new Node(node.num, d[node.num]));
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            if(visited[node.num] == 1) continue;
+            visited[node.num] = 1;
+            for (Node next : graph.get(node.num)) {
+                if(distance[next.num] > distance[node.num] + next.weight) {
+                    distance[next.num] = distance[node.num] + next.weight;
+                    queue.offer(new Node(next.num, distance[next.num]));
+                }
             }
         }
     }
