@@ -1,76 +1,45 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-	
-	private static int[] arr;
-	private static int n;
-	static boolean[] flag;
-	static int maxScore=0;
-	
-
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-		
-		n = Integer.parseInt(br.readLine());
-		
-		StringTokenizer st=new StringTokenizer(br.readLine());
-		ArrayList<Integer> al=new ArrayList<>();
-		arr = new int[n];
-		flag=new boolean[n];
-		for(int i=0;i<n;i++) {
-			arr[i]=Integer.parseInt(st.nextToken());
-		}	
-		
-		perm(0,al);
-		
-		System.out.println(maxScore);
-		
-	}
-	
-	private static void perm(int cur,ArrayList<Integer> al) {
-		if(cur==n-2) {
-			maxScore=maxScore<cal(al)?cal(al):maxScore;
-			return;
-		}
-		
-		for(int i=1;i<n-1;i++) {
-			if(!flag[i]) {
-				flag[i]=true;
-				al.add(i);
-				perm(cur+1,al);
-				al.remove(al.size()-1);
-				flag[i]=false;
-			}
-		}
-	}
-
-	private static int cal(ArrayList<Integer> al) {
-		
-		int score=0;
-		boolean[] used=new boolean[n];
-		for(int i=0;i<al.size();i++) {
-			int tmp=al.get(i);
-			used[tmp]=true;
-			int left=tmp-1;
-			int right=tmp+1;
-			
-			while(used[left]) {
-				left--;
-			}
-			while(used[right]) {
-				right++;
-			}
-			
-			score+=arr[left]*arr[right];
-		}
-		
-		
-		return score;
-	}
-	
+    public static int[] w, seq, visited;
+    public static int n, max;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        w = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        seq = new int[n-2];
+        visited = new int[n];
+        dfs(0);
+        System.out.println(max);
+        br.close();
+    }
+    public static void dfs(int cnt) {
+        if(cnt == n-2) {
+            // 에너지 계산
+            calEnergy();
+        }
+        for (int i = 1; i < n-1; i++) {
+            if(visited[i] == 0) {
+                visited[i] = 1;
+                seq[cnt] = i;
+                dfs(cnt + 1);
+                visited[i] = 0;
+            }
+        }
+    }
+    public static void calEnergy() {
+        int[] isUsed = new int[n];
+        int res = 0;
+        for (int i = 0; i < n-2; i++) {
+            int left = seq[i] - 1, right = seq[i] + 1;
+            while(isUsed[left] != 0) left--;
+            while(isUsed[right] != 0) right++;
+            isUsed[seq[i]] = 1;
+            res += w[left] * w[right];
+        }
+        max = Math.max(max, res);
+    }
 }
