@@ -3,9 +3,9 @@ import java.util.*;
 
 class Main {
     public static char[][] map;
-    public static int[][] visited, direction = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    public static int[][] direction = {{1,0}, {-1,0}, {0,1}, {0,-1}};
     public static List<int[]> teachers = new ArrayList<>();
-    public static int n, student;
+    public static int n;
     public static boolean isFinish = false;
     public static Set<int[]> set = new HashSet<>();
     public static void main(String[] args) throws IOException {
@@ -13,14 +13,12 @@ class Main {
         n = Integer.parseInt(br.readLine());
         
         map = new char[n][n];
-        visited = new int[n][n];
 
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             for (int j = 0; j < n; j++) {
                 map[i][j] = st.nextToken().charAt(0);
                 if(map[i][j] == 'T') teachers.add(new int[]{i, j});
-                else if(map[i][j] == 'S') student++;
             }
         }
         dfs(0,0,0);
