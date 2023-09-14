@@ -11,10 +11,8 @@ class Main {
         for (int i = 0; i < n; i++) {
             table[i] = Integer.parseInt(br.readLine());
         }
-
-        Arrays.sort(table);
-
-        long ans = 0, left = 1, right = table[0] * (long) m;
+        
+        long ans = 0, left = 1, right = Arrays.stream(table).min().getAsInt() * (long) m;
         while(left <= right) {
             long mid = (left + right) / 2;
             if(checkTime(mid, m)) {
