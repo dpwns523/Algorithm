@@ -10,47 +10,59 @@ class Main {
             this.cost = cost;
         }
     }
+    public static final long INF = Long.MAX_VALUE;
     public static ArrayList<ArrayList<City>> graph = new ArrayList<>();
+    public static long[] dist;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         int n = Integer.parseInt(st.nextToken()), m = Integer.parseInt(st.nextToken()), k = Integer.parseInt(st.nextToken());
-
+        dist = new long[n+1];
+        Arrays.fill(dist, INF);
         for (int i = 0; i <= n; i++) {
             graph.add(new ArrayList<>());
         }
+
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             int u = Integer.parseInt(st.nextToken()), v = Integer.parseInt(st.nextToken()), c = Integer.parseInt(st.nextToken());
             graph.get(v).add(new City(u, c));   // 면접 장소에서 면접자들한테 갈 것이므로 반대 방향으로 연결한다
         }
-        Queue<City> queue = new PriorityQueue<>((City c1, City c2) -> Long.compare(c1.cost, c2.cost));
+        Queue<City> queue = new ArrayDeque<>();
 
         st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < k; i++) {
-            queue.add(new City(Integer.parseInt(st.nextToken()), 0));
+            int meeting = Integer.parseInt(st.nextToken());
+            dist[meeting] = 0;
+            queue.add(new City(meeting, 0));
         }
 
-        City city = bfs(queue);
+        bfs(queue);
 
-        System.out.println(city.num +"\n"+ city.cost);
-
-    }
-    public static City bfs(Queue<City> queue) {
-        Queue<City> res = new PriorityQueue<>((City c1, City c2) -> Long.compare(c2.cost, c1.cost));
-        Set<Integer> visited = new HashSet<>();
-        while (!queue.isEmpty()) {
-            City city = queue.poll();
-            if(visited.contains(city.num)) continue;
-            visited.add(city.num);
-            res.add(city);
-
-            for (City next : graph.get(city.num)) {
-                queue.offer(new City(next.num, next.cost + city.cost));
+        long max = 0;
+        int maxIdx = 0;
+        for (int i=1; i<=n; i++) {
+            if(dist[i] > max && dist[i] != INF) {
+                max = dist[i];
+                maxIdx = i;
             }
         }
-        return res.isEmpty() ? new City(0,0) : res.poll();
+
+        System.out.println(maxIdx +"\n"+ max);
+
+    }
+    public static void bfs(Queue<City> queue) {
+        while (!queue.isEmpty()) {
+            City city = queue.poll();
+            for (City next : graph.get(city.num)) {
+                if(dist[next.num] > city.cost + next.cost) {
+                    dist[next.num] = city.cost + next.cost;
+                    queue.offer(new City(next.num, dist[next.num]));
+                }
+            }
+        }
     }
 }
