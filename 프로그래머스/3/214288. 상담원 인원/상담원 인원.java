@@ -9,22 +9,65 @@ class Solution {
         }
     }
     public int[] seq;
-    public PriorityQueue<Info> init = new PriorityQueue<>((i1, i2) -> i1.start-i2.start);
+    public int[][] waiting;
+    // public PriorityQueue<Info> init = new PriorityQueue<>((i1, i2) -> i1.start-i2.start);
+    public Map<Integer, PriorityQueue<Info>> map = new HashMap<>();
     public int wait = Integer.MAX_VALUE;
     public int solution(int k, int n, int[][] reqs) {
         int answer = 0;
+        waiting = new int[k+1][n-k+2];
         seq = new int[k];
         for(int[] req : reqs) {
-            init.offer(new Info(req[0], req[1], req[2]-1));
+            map.computeIfAbsent(req[2], key -> new PriorityQueue<>((i1, i2) -> i1.start-i2.start)).add(new Info(req[0], req[1], req[2]));
+            // init.offer(new Info(req[0], req[1], req[2]-1));
+        }
+        for(int i=1; i<=k; i++) {
+            for(int j=1; j<=n-k+1; j++) {
+                consulting(i, j);
+                if(waiting[i][j] == 0) break;
+            }
         }
         Arrays.fill(seq, 1);
         dfs(0, k, k, n);
         return wait;
     }
+    public void consulting(int type, int cnt) {
+        if(!map.containsKey(type)) return;
+        PriorityQueue<Info> person = new PriorityQueue<>(map.get(type));
+        PriorityQueue<Integer> consultant = new PriorityQueue<>();
+        int wait = 0, num = cnt;
+        while(!person.isEmpty()) {
+            Info next = person.poll();
+            if(cnt == 0) {  // 대기 발생
+                if(!consultant.isEmpty() && consultant.peek() > next.start) {   // 기다려야 한다
+                    wait += (consultant.peek() - next.start);
+                    consultant.add(consultant.poll() + next.end);
+                }
+                else{   // 앞에 끝난 인원이 있다 -> 상담 가능
+                    while(!consultant.isEmpty()) {
+                        if(consultant.peek() > next.start) break;
+                        consultant.poll();
+                        cnt++;
+                    }
+                    cnt--;
+                    consultant.add(next.start + next.end);
+                }
+            }
+            else {
+                consultant.add(next.start + next.end);
+                cnt--;
+            }
+        }
+        waiting[type][num] = wait;
+    }
     public void dfs(int idx, int sum, int k, int n) {
         if(idx == k) {
-            if(sum < n) return;
-            consult();
+            if(sum < n) return; // 상담사가 n명이어야 함
+            int curr = 0;
+            for(int i=1; i<=k; i++) {
+                curr += waiting[i][seq[i-1]];
+            }
+            wait = Math.min(wait, curr);
             return;
         }
         
@@ -34,60 +77,5 @@ class Solution {
             dfs(idx+1, sum+i, k, n);
             seq[idx] -= i;
         }
-    }
-    
-    public void consult() {
-        int[] use = Arrays.copyOf(seq, seq.length);
-        int currWait = 0;
-        PriorityQueue<Info> person = new PriorityQueue<>(init);
-        Map<Integer, PriorityQueue<Integer>> consultant = new HashMap<>();
-        
-        while(!person.isEmpty() && currWait < wait) {
-            Info next = person.poll();
-            if(use[next.type] == 0) {   // 상담원이 부족
-                PriorityQueue<Integer> p = consultant.get(next.type);
-                if(p.peek() > next.start) {   // 기다려야 한다
-                    //기다렸다가 먼저 작업할 사람을 찾아야하는데 일찍끝나는사람이 들어가는게 전체 대기시간을 줄일 수 있다.
-                    currWait += (p.peek() - next.start);
-                    p.add(p.poll() + next.end);
-//                     Queue<Info> tmp = new ArrayDeque<>();
-//                     tmp.add(next);
-//                     int min = next.end;
-                    
-//                     while(!person.isEmpty() && person.peek().start <= p.peek()) {   // 상담 기다린 사람들
-//                         Info i = person.poll();
-//                         if(i.type == next.type) min = Math.min(min, i.end);
-//                         tmp.add(i);
-//                     }
-                    
-//                     while(!tmp.isEmpty()) {
-//                         Info i = tmp.poll();
-//                         if(i.type == next.type && min == i.end) {   // 상담 가능 사람 중 가장 짧게 끝나는 사람 먼저                            
-//                             currWait += (p.peek() - i.start);
-//                             p.add(p.poll() + i.end);
-//                             break;
-//                         }
-//                         else person.offer(i);
-//                     }
-//                     while(!tmp.isEmpty()) {
-//                         person.offer(tmp.poll());
-//                     }
-                }
-                else{   // 앞에 끝난 인원이 있다 -> 상담 가능
-                    while(!p.isEmpty()) {
-                        if(p.peek() > next.start) break;
-                        p.poll();
-                        use[next.type]++;
-                    }
-                    use[next.type]--;
-                    p.add(next.start + next.end);
-                }
-            }
-            else {
-                consultant.computeIfAbsent(next.type, k -> new PriorityQueue<>()).add(next.start + next.end);
-                use[next.type]--;
-            }
-        }
-        wait = Math.min(wait, currWait);
     }
 }
